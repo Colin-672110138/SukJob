@@ -1,10 +1,3 @@
-//
-//  VerificationSummaryView.swift
-//  SJ
-//
-//  Created by colin black on 12/11/2568 BE.
-//
-
 // Views/Onboarding/VerificationSummaryView.swift
 
 import SwiftUI
@@ -16,87 +9,91 @@ struct VerificationSummaryView: View {
 
     var body: some View {
         VStack(spacing: 30) {
-            Text("สรุปและยืนยันรูปภาพ (8/8)")
-                .font(.title2)
+            // ... (Title and Subtitle)
+            
+            Text("ยืนยันรูปถ่าย") // <<< หัวข้อใหม่ตามที่ต้องการ
+                .font(.title3)
                 .bold()
+                .padding(.top, 10)
             
-            Text("กรุณาตรวจสอบรูปภาพเพื่อยืนยันตัวตนก่อนเข้าสู่ระบบ")
-                .font(.subheadline)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal)
-            
-            // MARK: - แถบแสดงรูปภาพ 3 รูป
-            VStack(spacing: 25) {
-                SummaryImage(title: "บัตรประชาชนด้านหน้า", uiImage: viewModel.idCardFrontImage)
-                SummaryImage(title: "บัตรประชาชนด้านหลัง", uiImage: viewModel.idCardBackImage)
-                SummaryImage(title: "รูปถ่ายคู่บัตร", uiImage: viewModel.selfieWithIDImage)
+            // MARK: - แถบแสดงรูปภาพ 3 รูป (ปรับให้ดูสะอาดตา)
+            ScrollView { // เพิ่ม ScrollView เพื่อรองรับรูปภาพขนาดใหญ่
+                VStack(spacing: 5) {
+                    // รูปภาพแต่ละรายการจะถูกแสดงโดยไม่มีพื้นหลังสีเทา
+                    SummaryImage(title: "บัตรประชาชนด้านหน้า", uiImage: viewModel.idCardFrontImage)
+                    SummaryImage(title: "บัตรประชาชนด้านหลัง", uiImage: viewModel.idCardBackImage)
+                    SummaryImage(title: "รูปถ่ายคู่บัตร", uiImage: viewModel.selfieWithIDImage)
+                }
+                .padding(.horizontal, 20) // เพิ่ม Padding ให้โดยรวมดูไม่ติดขอบ
+                
+                Spacer()
             }
+            // ปรับปุ่มให้ย้ายมาอยู่ด้านล่างสุดของหน้าจอ
             
-            
-            // MARK: - ปุ่มยืนยัน
             // MARK: - ปุ่มยืนยัน
             Button("ยืนยันและดำเนินการต่อ") {
-                            showingConfirmation = true
-                        }
-            // ลบ .padding(.top, 10) ออกจากตรงนี้ก่อน เพราะเรามี spacing ใน VStack หลักแล้ว
-            // ลบ .frame(maxWidth: .infinity) ออก เพราะ .padding() ก็ทำให้ขยายเต็มอยู่แล้ว
-            .frame(maxWidth: .infinity) // <<< ขยายปุ่มเต็มความกว้าง
-                        .padding()
-                        .background(Color.green) // <<< ใช้สีเขียวคงที่เพราะหน้านี้ไม่ต้องการ disabled
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
-                        // ลบ .padding(.top, 10), .font(.headline), และ .shadow ออกเพื่อให้สไตล์เรียบง่ายและเป็นมาตรฐาน
+                showingConfirmation = true
+            }
+            .frame(maxWidth: .infinity)
+            .padding()
+            .background(Color.green)
+            .foregroundColor(.white)
+            .cornerRadius(10)
+            .padding(.horizontal) // เพิ่ม Padding ให้ปุ่ม
+            
         }
         .padding()
         //.navigationTitle("ยืนยันตัวตน")
-        //.navigationBarBackButtonHidden(true)
-        
         // MARK: - ข้อความเด้ง (Alert)
         .alert("ยืนยันตัวตนเรียบร้อย", isPresented: $showingConfirmation) {
             Button("ไปยังหน้าหลัก") {
-                viewModel.isProfileFullyVerified = true // เปลี่ยนสถานะเพื่อนำทาง
+                viewModel.isProfileFullyVerified = true // <<< ตั้งค่าเพื่อ Trigger Navigation
             }
         } message: {
             Text("คุณสามารถเริ่มโพสต์งานหรือหางานได้ทันที")
         }
         
-        // MARK: - การนำทางไปหน้าหลัก
+        // MARK: - การนำทางไปหน้าหลัก (แก้ไข: ส่ง viewModel เข้าไป)
         .navigationDestination(isPresented: $viewModel.isProfileFullyVerified) {
-            MainDashboardView() // ไปยังหน้าหลัก
+            MainDashboardView(viewModel: viewModel) // <<<< แก้ไขตรงนี้
         }
     }
 }
 
-// MARK: - Component สำหรับแสดงรูปในหน้าสรุป
+// MARK: - Component สำหรับแสดงรูปในหน้าสรุป (ปรับปรุง Minimal Style)
 struct SummaryImage: View {
     let title: String
     let uiImage: UIImage?
     
     var body: some View {
         VStack(spacing: 8) {
+            Text(title) // <<< ย้ายหัวข้อมาด้านบนรูป
+                .font(.caption)
+                .bold()
+                .foregroundColor(.secondary)
+            
             if let uiImage = uiImage {
                 Image(uiImage: uiImage)
                     .resizable()
                     .scaledToFit()
-                    .frame(height: 120)
+                    .frame(maxHeight: 180) // เพิ่มความสูงให้รูปดูใหญ่ขึ้น
                     .cornerRadius(8)
+                    .shadow(radius: 5) // เพิ่มเงาเล็กน้อยให้รูปภาพดูมีมิติ
             } else {
                 Image(systemName: "photo.fill")
                     .resizable()
                     .scaledToFit()
                     .foregroundColor(.gray)
-                    .frame(height: 120)
-                    .padding(10)
+                    .frame(height: 160)
             }
-            
-            Text(title)
-                .font(.caption)
-                .foregroundColor(.secondary)
         }
         .frame(maxWidth: .infinity)
-        .padding()
-        .background(Color(.systemGray6))
-        .cornerRadius(10)
-        .shadow(color: Color.black.opacity(0.1), radius: 2, x: 0, y: 1)
+        // <<< ลบ Background, Padding และ Shadow ภายนอกออกทั้งหมด >>>
     }
+}
+
+#Preview {
+    // ต้องสร้าง Instance ของ ViewModel และส่งเข้าไปใน Preview
+    VerificationSummaryView(viewModel: OnboardingViewModel())
+        .environment(\.colorScheme, .light)
 }

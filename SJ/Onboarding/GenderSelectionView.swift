@@ -25,7 +25,7 @@ struct GenderSelectionView: View {
                 GenderButton(
                     title: "ชาย",
                     tag: "Male",
-                    iconName: "person.fill", // เพิ่ม icon
+                    iconName: "m.circle.fill", // เพิ่ม icon
                     selectedTag: $viewModel.userProfile.gender
                 )
                 
@@ -33,7 +33,7 @@ struct GenderSelectionView: View {
                 GenderButton(
                     title: "หญิง",
                     tag: "Female",
-                    iconName: "figure.male", // เพิ่ม icon
+                    iconName: "f.circle.fill", // เพิ่ม icon
                     selectedTag: $viewModel.userProfile.gender
                 )
                 
@@ -85,6 +85,23 @@ struct GenderButton: View {
         return selectedTag == tag
     }
     
+    // 🎨 ฟังก์ชันเลือกสีตามเพศ
+    var selectedColor: Color {
+        switch tag {
+        case "Male": return Color.blue.opacity(0.15)
+        case "Female": return Color.pink.opacity(0.2)
+        default: return Color.purple.opacity(0.15)
+        }
+    }
+    
+    var strokeColor: Color {
+        switch tag {
+        case "Male": return .blue
+        case "Female": return .pink
+        default: return .purple
+        }
+    }
+
     var body: some View {
         Button(action: {
             selectedTag = tag
@@ -102,25 +119,22 @@ struct GenderButton: View {
                 Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
                     .font(.title2)
             }
-            .foregroundColor(isSelected ? .blue : .primary)
+            .foregroundColor(isSelected ? strokeColor : .primary)
             .padding(20)
             .frame(maxWidth: .infinity)
             .background(
-                isSelected
-                ? Color.blue.opacity(0.15)    // ✅ สีฟ้าอ่อนเมื่อเลือก
-                : Color.gray.opacity(0.15)    // สีเทาใสขุ่นเมื่อยังไม่เลือก
+                isSelected ? selectedColor : Color.gray.opacity(0.15)
             )
             .cornerRadius(14)
             .overlay(
                 RoundedRectangle(cornerRadius: 14)
-                    .stroke(isSelected ? Color.blue : Color.clear, lineWidth: 2) // ✅ เส้นขอบฟ้าเมื่อเลือก
+                    .stroke(isSelected ? strokeColor : Color.clear, lineWidth: 2)
             )
-            .shadow(color: isSelected ? Color.blue.opacity(0.2) : .clear, radius: 4, x: 0, y: 2)
+            .shadow(color: isSelected ? strokeColor.opacity(0.25) : .clear, radius: 4, x: 0, y: 2)
         }
         .animation(.easeInOut(duration: 0.2), value: isSelected)
     }
 }
-
 // #Preview ของเดิม (แนะนำให้ลบก่อนใช้งานจริง)
 
 #Preview {

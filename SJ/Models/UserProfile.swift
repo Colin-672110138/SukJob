@@ -27,6 +27,7 @@ struct UserProfile: Codable {
     // ข้อมูลที่กรอกในขั้นตอนต่อๆ ไป
     var gender: String = ""
     var idCardNumber: String = "" // จาก OCR
+    var currentAddress: String = ""
     var phoneNumber: String = ""
     // ... อื่นๆ
 }

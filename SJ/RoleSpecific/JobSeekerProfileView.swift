@@ -58,7 +58,7 @@ struct JobSeekerProfileView: View {
             }
             
             // ปุ่มเสร็จสิ้น
-            Button("เสร็จสิ้นและเข้าสู่ระบบ") {
+            Button("ดำเนินการต่อ") {
                 viewModel.saveJobSeekerProfile(
                     position: positionInput,
                     hasExp: hasExperience,
@@ -83,4 +83,9 @@ struct JobSeekerProfileView: View {
             VerificationSummaryView(viewModel: viewModel) // <-- ชี้ไปหน้า 8
         }
     }
+}
+
+#Preview {
+    JobSeekerProfileView(viewModel: OnboardingViewModel())
+            .environment(\.colorScheme, .light)
 }

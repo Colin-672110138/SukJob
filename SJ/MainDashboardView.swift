@@ -10,24 +10,37 @@
 import SwiftUI
 
 struct MainDashboardView: View {
+    // ต้องรับ ViewModel เข้ามาเพื่อเข้าถึง Role และข้อมูลอื่นๆ
+    @StateObject var viewModel: OnboardingViewModel
+
     var body: some View {
         TabView {
-            Text("หน้าหลัก (Dashboard)")
+            // MARK: - Tab 1: หน้าหลัก (Home/Dashboard)
+            // ใช้ View เฉพาะบทบาทสำหรับ Home
+            RoleSpecificHomeView(viewModel: viewModel)
                 .tabItem {
                     Label("หน้าหลัก", systemImage: "house.fill")
                 }
             
-            Text("หน้าโพสต์งาน/หางาน")
+            // MARK: - Tab 2: หน้าประกาศ (Postings/Jobs)
+            // Icon จะเปลี่ยนไปตามบทบาท
+            RoleSpecificPostingView(viewModel: viewModel)
                 .tabItem {
-                    Label("ประกาศ", systemImage: "list.bullet.rectangle.fill")
+                    Label("โพสต์",
+                          // Icon เปลี่ยน: + สำหรับ Employer, List สำหรับ Job Seeker
+                          systemImage: viewModel.userProfile.role == .employer ? "plus.circle.fill" : "list.bullet.clipboard.fill")
                 }
             
-            Text("หน้าโปรไฟล์")
+            // MARK: - Tab 3: หน้าโปรไฟล์
+            // ใช้ View สำหรับ Profile
+            ProfileView(viewModel: viewModel)
                 .tabItem {
                     Label("โปรไฟล์", systemImage: "person.fill")
                 }
         }
-        .navigationTitle("แอปเกษตรลำไย")
+        //.navigationTitle("แอปเกษตรลำไย")
         .navigationBarBackButtonHidden(true)
     }
 }
+
+

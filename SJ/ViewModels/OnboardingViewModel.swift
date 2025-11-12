@@ -26,6 +26,9 @@ class OnboardingViewModel: ObservableObject {
     @Published var selfieWithIDImage: UIImage?
     @Published var isProfileFullyVerified: Bool = false
     
+    @Published var isLoggedOut: Bool = false
+    @Published var isCurrentAddressSameAsIDCard: Bool = false // <<< สถานะ Checkbox
+    
     @Published var ocrData: IDCardData = IDCardData()
     // MARK: - Mock Login (จำลองการทำงานของ LINE Login)
     func performLineLogin() {
@@ -87,6 +90,7 @@ class OnboardingViewModel: ObservableObject {
             employerProfile.squareMeters = sqMeters
             employerProfile.longanTreeCount = treeCount
             
+            
             print("Employer Profile Saved.")
         }
         
@@ -98,6 +102,18 @@ class OnboardingViewModel: ObservableObject {
                 
                 print("Job Seeker Profile Saved.")
             }
+    
+    func logout() {
+            // รีเซ็ตข้อมูลผู้ใช้ทั้งหมด (ถ้าต้องการ)
+            userProfile = UserProfile()
+            ocrData = IDCardData()
+            
+            // กำหนดให้ isLoggedOut เป็น true เพื่อ Trigger การเปลี่ยนหน้า
+            isLoggedOut = true
+            
+            // กำหนดให้ isAuthenticated เป็น false ด้วย (ถ้าคุณใช้ Logic นี้ใน ContentView)
+            isAuthenticated = false
+        }
     
 }
 

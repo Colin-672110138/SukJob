@@ -58,7 +58,7 @@ struct LoginView: View {
                 viewModel.performLineLogin() // เรียกใช้ Mock Login
             }) {
                 HStack {
-                    Image("LineIcon") // สมมติว่ามีรูป Line Icon
+                    //Image("") // สมมติว่ามีรูป Line Icon
                     Text("เข้าสู่ระบบด้วย LINE")
                 }
                 .frame(maxWidth: .infinity)
