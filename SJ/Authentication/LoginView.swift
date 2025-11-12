@@ -15,9 +15,29 @@ struct LoginView: View {
     
     var body: some View {
         VStack(spacing: 30) {
-            Text("ยินดีต้อนรับสู่ suk Job")
+            
+            
+            Image("Logo1")
+                .resizable()
+                .scaledToFill()
+                .frame(width: 120, height: 120)
+                .clipShape(Circle()) // ทำให้เป็นวงกลม
+                .overlay(
+                    Circle().stroke(Color.white, lineWidth: 4) // เส้นขอบสีขาว
+                )
+                .shadow(radius: 2) // เพิ่มเงาเล็กน้อย (optional)
+            
+            Text("ยินดีต้อนรับสู่ ")
                 .font(.largeTitle)
                 .bold()
+            + Text("Suk")
+                .font(.largeTitle)
+                .bold()
+                .foregroundColor(.yellow)
+            + Text("Job")
+                .font(.largeTitle)
+                .bold()
+                .foregroundColor(.green)
             
             HStack {
                 Rectangle()
@@ -54,4 +74,8 @@ struct LoginView: View {
             WelcomeRoleSelectionView(viewModel: viewModel)
         }
     }
+}
+#Preview {
+    LoginView(viewModel: OnboardingViewModel())
+            .environment(\.colorScheme, .light)
 }

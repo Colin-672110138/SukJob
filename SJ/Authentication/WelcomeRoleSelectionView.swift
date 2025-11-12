@@ -32,7 +32,7 @@ struct WelcomeRoleSelectionView: View {
             
             Text("เลือกบทบาทของคุณ")
                 .font(.title2)
-                .padding(.bottom, 10)
+                .padding(.bottom, 0)
             
             // MARK: - ปุ่มเลือกบทบาท
             VStack(spacing: 20) {
@@ -48,7 +48,7 @@ struct WelcomeRoleSelectionView: View {
                 RoleSelectionButton(
                     role: .jobSeeker,
                     title: UserRole.jobSeeker.rawValue,
-                    description: "ต้องการหางานรับจ้างเก็บลำไย",
+                    description: "ต้องการหางานรับจ้างเก็บผลผลิต",
                     selectedRole: $selectedRole // ส่ง Binding เพื่อติดตามการเลือก
                 ) {
                     selectedRole = .jobSeeker // อัปเดตการเลือกเมื่อถูกกด
@@ -128,4 +128,9 @@ struct RoleSelectionButton: View {
         }
         .animation(.easeInOut(duration: 0.2), value: isSelected)
     }
+}
+
+#Preview {
+    WelcomeRoleSelectionView(viewModel: OnboardingViewModel())
+            .environment(\.colorScheme, .light)
 }
