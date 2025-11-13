@@ -14,13 +14,14 @@ struct MainDashboardView: View {
     @StateObject var viewModel: OnboardingViewModel
 
     var body: some View {
-        TabView {
+        TabView (selection: $viewModel.currentTabIndex){
             // MARK: - Tab 1: หน้าหลัก (Home/Dashboard)
             // ใช้ View เฉพาะบทบาทสำหรับ Home
             RoleSpecificHomeView(viewModel: viewModel)
                 .tabItem {
                     Label("หน้าหลัก", systemImage: "house.fill")
                 }
+                .tag(0)
             
             // MARK: - Tab 2: หน้าประกาศ (Postings/Jobs)
             // Icon จะเปลี่ยนไปตามบทบาท
@@ -30,6 +31,7 @@ struct MainDashboardView: View {
                           // Icon เปลี่ยน: + สำหรับ Employer, List สำหรับ Job Seeker
                           systemImage: viewModel.userProfile.role == .employer ? "plus.circle.fill" : "list.bullet.clipboard.fill")
                 }
+                .tag(1)
             
             // MARK: - Tab 3: หน้าโปรไฟล์
             // ใช้ View สำหรับ Profile
@@ -37,6 +39,7 @@ struct MainDashboardView: View {
                 .tabItem {
                     Label("โปรไฟล์", systemImage: "person.fill")
                 }
+                .tag(2)
         }
         //.navigationTitle("แอปเกษตรลำไย")
         .navigationBarBackButtonHidden(true)

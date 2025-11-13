@@ -28,6 +28,7 @@ class OnboardingViewModel: ObservableObject {
     
     @Published var isLoggedOut: Bool = false
     @Published var isCurrentAddressSameAsIDCard: Bool = false // <<< สถานะ Checkbox
+    @Published var currentTabIndex: Int = 0
     
     @Published var ocrData: IDCardData = IDCardData()
     // MARK: - Mock Login (จำลองการทำงานของ LINE Login)
