@@ -29,7 +29,7 @@ struct MainDashboardView: View {
                 .tabItem {
                     Label("โพสต์",
                           // Icon เปลี่ยน: + สำหรับ Employer, List สำหรับ Job Seeker
-                          systemImage: viewModel.userProfile.role == .employer ? "plus.circle.fill" : "list.bullet.clipboard.fill")
+                          systemImage: viewModel.userProfile.role == .employer ? "plus.circle.fill" : "plus.circle.fill")
                 }
                 .tag(1)
             
